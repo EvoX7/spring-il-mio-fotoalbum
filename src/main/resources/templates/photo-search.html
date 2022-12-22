@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:rel="stylesheet"
+	th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/MyStyle.css}" />
+
+<title>Bisan Photo and Art</title>
+</head>
+<body>
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <div class="d-flex justify-content-start mt-2">
+        <a class="navbar-brand fw-bold m-auto" th:href="@{/}"><img th:src="@{/img/bisan_logo.png}" width="140px" height="140px" alt="logo" /></a>
+      </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+        <span class="navbar-toggler-icon"></span>
+
+      </button>
+      <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
+        <div>
+          <ul class="navbar-nav me-auto mt-3 mx-3 mb-lg-0">
+            <li class="nav-item fw-bold"><a th:href="@{/photos}" class="nav-link">Photos</a></li>
+            <li class="nav-item fw-bold"><a th:href="@{/category}" class="nav-link">Category</a></li>
+          </ul>
+        </div>
+        <div>
+          <ul class="navbar-nav me-auto mt-3 mx-3 mb-lg-0">
+            <li class="nav-item fw-bold"><a th:href="@{/logout}" class="nav-link">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+	<div class="container mb-3">
+	<h6 class="mt-4">
+			Logged user: <span sec:authentication="name"></span>
+		</h6>
+		<div class="row">
+			<div class="col">
+				<h1 class="mt-5 text-center">
+					Photos List <img class="m-auto mx-5" th:src="@{/img/camera.png}"
+						width="90px" height="70px" alt="camera" />
+				</h1>
+
+				<h2 class="text-center" th:if="${photos.isEmpty()}">There are
+					no available photos</h2>
+				<div class="d-flex justify-content-between mb-2">
+				
+				<div>
+				<a href="/photos" class="btn btn-warning mb-1 fw-bold"> Back to Photos</a>
+					</div>
+					
+					<div>
+						<a href="/photos/admin/create" class="btn btn-success mb-1 fw-bold">Add
+							a new Photo</a>
+					</div>
+				</div>
+				<table class="table table-primary table-striped">
+					<tr class="text-center">
+						<th>Title</th>
+						<th>Description</th>
+						<th>Tag</th>
+						<th>Image</th>
+						<th colspan="2">Category</th>
+						<th >Visibility</th>
+						<th colspan="2">Available actions</th>
+					</tr>
+					<tr class="text-center" th:each="photo : ${photos}"
+						th:object="${photo}">
+						<td th:text="*{title}"></td>
+						<td th:text="*{description}"></td>
+						<td th:text="*{tag}"></td>
+						<td class="fst-italic" th:text="*{imgUrl}"></td>
+						<td colspan="2" th:text="*{categories}"></td>
+						<td  th:text="*{visible}"></td>
+						
+						
+						<td colspan="2"><a th:href="@{photo/show/{id}(id=${photo.id})}" class="btn btn-info fw-bold mb-2">Show</a>
+						
+						<a th:href="@{/photos/admin/edit/{id}(id=${photo.id})}"
+							class="btn btn-warning fw-bold mx-2 mb-2">Modify</a> <a
+							th:href="@{/photos/admin/delete/{id}(id=${photo.id})}"
+							class="btn btn-danger fw-bold">Delete</a></td>
+					</tr>
+				</table>
+				<div class="d-flex justify-content-end">
+					<a th:href="@{/category}" class="btn btn-primary fw-bold">Go to
+						Categories =></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+</body>
+</html>

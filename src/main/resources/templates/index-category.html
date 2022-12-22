@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:rel="stylesheet"
+	th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/MyStyle.css}" />
+
+<title>Bisan category and Art</title>
+</head>
+<body>
+
+	<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <div class="d-flex justify-content-start mt-2">
+        <a class="navbar-brand fw-bold m-auto" th:href="@{/}"><img th:src="@{/img/bisan_logo.png}" width="140px" height="140px" alt="logo" /></a>
+      </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+        <span class="navbar-toggler-icon"></span>
+
+      </button>
+      <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
+        <div>
+          <ul class="navbar-nav me-auto mt-3 mx-3 mb-lg-0">
+            <li class="nav-item fw-bold"><a th:href="@{/photos}" class="nav-link">Photos</a></li>
+            <li class="nav-item fw-bold"><a th:href="@{/category}" class="nav-link">Category</a></li>
+          </ul>
+        </div>
+        <div>
+          <ul class="navbar-nav me-auto mt-3 mx-3 mb-lg-0">
+            <li class="nav-item fw-bold"><a th:href="@{/logout}" class="nav-link">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+	<div class="container">
+	<h6 class="mt-4">
+			Logged user: <span sec:authentication="name"></span>
+		</h6>
+		<div class="row">
+			<div class="col">
+				<h1 class="mt-5 text-center">
+					Categories <img class="m-auto" th:src="@{/img/cat.png}"
+						width="140px" height="120px" alt="camera" />
+				</h1>
+
+				<h2 class="text-center" th:if="${categories.isEmpty()}">There are
+					no available categories</h2>
+				<div class="d-flex justify-content-between mb-2">
+					<div>
+						<form class="d-flex" role="search" method="GET"
+							th:action="@{/category/search}">
+							<input class="form-control me-2" type="text" name="query"
+								th:value="${query}" aria-label="Search">
+							<button class="btn btn-primary" type="submit">Search</button>
+						</form>
+					</div>
+					<div>
+						<a href="/category/admin/create" class="btn btn-success mb-1 fw-bold">Add
+							a new Category</a>
+					</div>
+				</div>
+				<table class="table table-primary table-striped">
+					<tr class="text-center">
+						<th>Name</th>
+				
+						
+						<th>Available actions</th>
+					</tr>
+					<tr class="text-center" th:each="category : ${categories}"
+						th:object="${category}">
+						<td th:text="*{name}"></td>
+						<td>
+						<a th:href="@{/category/admin/edit/{id}(id=${category.id})}"
+							class="btn btn-warning fw-bold mx-2 mb-2">Modify</a> <a
+							th:href="@{/category/admin/delete/{id}(id=${category.id})}"
+							class="btn btn-danger fw-bold">Delete</a>
+						
+						
+						</td>
+						
+						
+					</tr>
+				</table>
+				<div class="d-flex justify-content-end">
+					<a th:href="@{/photos}" class="btn btn-primary fw-bold">Go to
+						Photos =></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+</body>
+</html>
