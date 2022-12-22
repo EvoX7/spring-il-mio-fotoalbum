@@ -20,7 +20,7 @@
           </button>
         </form>
 
-        <div class="col d-flex flex-wrap mt-5">
+        <div class="col d-flex flex-wrap mt-4">
           <div
             v-for="photo in photos"
             :key="photo.id"
@@ -55,19 +55,17 @@
 <script>
 import axios from "axios";
 
-const PHOTO_ID = -1;
-
 export default {
   name: "Home",
   data() {
     return {
       apiUrl: "http://localhost:8080/api/1",
       photos: [],
-      photoId: PHOTO_ID,
       searchQuery: "",
     };
   },
   methods: {
+ 
     getPhotos() {
       axios
         .get(this.apiUrl + "/photos/all")
@@ -82,14 +80,20 @@ export default {
         });
     },
 
-    getCategories(photoId) {
+    getIndexFromPhoto(photoId) {
+      return this.photos.findIndex((photo) => photo.id === photoId);
+    },
+
+    getCategoryPhoto(photoId) {
       axios
-        .get(this.apiUrl + "/c/category/" + photoId)
+        .get(this.apiUrl + "/category/" + photoId)
         .then((res) => {
-          const categories = res.data;
-          console.table(categories);
-          if (categories == null) return;
-          this.categories = categories;
+          const categoriesWphoto = res.data;
+          console.table(categoriesWphoto);
+          if (categoriesWphoto == null) return;
+
+          const index = this.getIndexFromPhoto(photoId);
+          this.photos[index].categories = categoriesWphoto;
         })
         .catch((error) => {
           console.log(error);
@@ -103,14 +107,14 @@ export default {
         .then((result) => {
           this.photos = "";
           this.photos = result.data;
+        })
+        .catch((error) => {
+          console.log(error);
         });
     },
   },
   mounted() {
     this.getPhotos();
-    this.photos.forEach((photo) => {
-      this.getCategories(photo.id);
-    });
   },
 };
 </script>

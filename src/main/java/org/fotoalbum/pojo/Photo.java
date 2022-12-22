@@ -23,7 +23,7 @@ public class Photo {
 	private int id;
 
 	@NotEmpty(message = "title cannot be empty")
-	@Column(unique = true)
+	@Column
 	private String title;
 
 	@Column
