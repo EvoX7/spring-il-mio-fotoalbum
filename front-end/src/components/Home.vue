@@ -1,39 +1,25 @@
 <template>
   <div>
-    <header>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-          <div class="d-flex justify-content-start mt-2">
-            <a class="navbar-brand text-primary" href="#"
-              ><img
-                class="img-fluid logo"
-                src=".././assets/img/bisan_logo.png"
-                width="130px"
-                height="130px"
-                alt="logo"
-            /></a>
-          </div>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div
-            class="collapse navbar-collapse d-flex justify-content-between"
-            id="navbarSupportedContent"
-          ></div>
-        </div>
-      </nav>
-    </header>
-
     <div class="container">
       <div class="row">
+        <form class="d-flex justify-content-center mt-5" role="search">
+          <input
+            class="form-control me-2 w-25"
+            type="search"
+            placeholder="Find your photo..."
+            aria-label="Search"
+            v-model="searchQuery"
+            @keyup="getSearchPhotos()"
+          />
+          <button
+            class="btn btn-primary"
+            type="submit"
+            @click="getSearchPhotos()"
+          >
+            Search
+          </button>
+        </form>
+
         <div class="col d-flex flex-wrap mt-5">
           <div
             v-for="photo in photos"
@@ -78,6 +64,7 @@ export default {
       apiUrl: "http://localhost:8080/api/1",
       photos: [],
       photoId: PHOTO_ID,
+      searchQuery: "",
     };
   },
   methods: {
@@ -108,11 +95,21 @@ export default {
           console.log(error);
         });
     },
+
+    getSearchPhotos() {
+      if (this.searchQuery == "") return this.getPhotos();
+      axios
+        .get(this.apiUrl + "/photos/search/" + this.searchQuery)
+        .then((result) => {
+          this.photos = "";
+          this.photos = result.data;
+        });
+    },
   },
   mounted() {
     this.getPhotos();
     this.photos.forEach((photo) => {
-    this.getCategories(photo.id);
+      this.getCategories(photo.id);
     });
   },
 };
